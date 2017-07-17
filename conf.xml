@@ -1,0 +1,21 @@
+<config>
+    <http>
+        <isssl>false</isssl>
+        <cacert></cacert>
+        <host>www.baidu.com</host>
+        <port>80</port>
+        <processtimeout>60</processtimeout>
+    </http>
+    <logging>
+        <backup>3</backup>
+        <maxsize>5</maxsize> <!-- sizeof MB -->
+        <level>debug</level> <!-- debug, info, warn, error -->
+    </logging>
+    <pg>
+        <user>spe</user>
+        <passwd>spe</passwd>
+        <db>spe_db</db>
+        <host>127.0.0.1</host>
+        <port>5432</port>
+    </pg>
+</config>
