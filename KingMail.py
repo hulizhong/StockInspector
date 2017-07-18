@@ -18,7 +18,7 @@ class KingMail(object):
         self.user = "rabinhu"
         self.encpswd = "0lz96ur77o"
         self.sender = 'rabinhu@yeah.net'
-        self.receivers = ['hulizhong@yeah.net']
+        self.receivers = ['rabinhu@126.com']
         pswd = EncDecGraph()
         if isSSL:
             logger.infoLog('will connect mail server with ssl.')
