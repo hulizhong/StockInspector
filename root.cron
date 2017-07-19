@@ -3,3 +3,5 @@ MAILTO=""
 # (/tmp/crontab.hS4iAV/crontab installed on Sat Jul 15 21:56:10 2017)
 # (Cron version -- $Id: crontab.c,v 2.13 1994/01/17 03:20:37 vixie Exp $)
 0 6-23/1 * * * /usr/bin/python /home/RabinHu/StockInspector/news.py
+*/5 9-12/1 * * * /usr/bin/python /home/RabinHu/StockInspector/today_quotes.py
+*/5 13-15/1 * * * /usr/bin/python /home/RabinHu/StockInspector/today_quotes.py

@@ -32,7 +32,6 @@ import email.MIMEMultipart# import MIMEMultipart
 #import mimetypes  
 
 if __name__ == '__main__':  
-    mail = KingMail()
     codes = ["300458", "300369", "002467"]
     for code in codes:
         urls = []
@@ -49,5 +48,6 @@ if __name__ == '__main__':
                 att.add_header('content-disposition','attachment',filename='data.txt')
                 #att["Content-Disposition"] = 'attachment; filename="data.txt"'
                 msg.attach(att)
+            mail = KingMail()
             mail.sendWithAttachment(msg, 'news')
 

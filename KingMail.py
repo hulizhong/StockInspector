@@ -36,11 +36,15 @@ class KingMail(object):
         #self.smtpObj.quit()
         pass
 
-    def sendtxt(self, content):
+    def sendtxt(self, content, sub=""):
         try:
             ### text/plain will due to outlook recv mail as txt file.
             message = MIMEText(content, 'plain', 'utf-8')
-            message['Subject'] = Header('金花策略', 'utf-8')
+            if len(sub) == 0:
+                message['Subject'] = Header('金花策略', 'utf-8')
+            else:
+                newsub = "金花策略 - " + sub
+                message['Subject'] = Header(newsub, 'utf-8')
             message['From'] = self.sender
             ### bug, if receivers is a list, use .join(receivers)
             #message['To'] = self.receivers
@@ -54,14 +58,15 @@ class KingMail(object):
             #fencoding=chardet.detect(e.smtp_error)
             #print fencoding
 
-    def sendhtml(self, content, sub):
+    def sendhtml(self, content, sub=""):
         try:
             ### text/plain will due to outlook recv mail as txt file.
             message = MIMEText(content, 'html', 'utf-8')
-            if sub == 'news':
-                message['Subject'] = Header('金花策略 - 新闻中心', 'utf-8')
-            else:
+            if len(sub) == 0:
                 message['Subject'] = Header('金花策略', 'utf-8')
+            else:
+                newsub = "金花策略 - " + sub
+                message['Subject'] = Header(newsub, 'utf-8')
             message['From'] = self.sender
             ### bug, if receivers is a list, use .join(receivers)
             #message['To'] = self.receivers
@@ -75,12 +80,13 @@ class KingMail(object):
             #fencoding=chardet.detect(e.smtp_error)
             #print fencoding
 
-    def sendWithAttachment(self, message, sub):
+    def sendWithAttachment(self, message, sub=""):
         try:
-            if sub == 'news':
-                message['Subject'] = Header('金花策略 - 新闻中心', 'utf-8')
-            else:
+            if len(sub) == 0:
                 message['Subject'] = Header('金花策略', 'utf-8')
+            else:
+                newsub = "金花策略 - " + sub
+                message['Subject'] = Header(newsub, 'utf-8')
             message['From'] = self.sender
             ### bug, if receivers is a list, use .join(receivers)
             #message['To'] = self.receivers
