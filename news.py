@@ -43,14 +43,11 @@ if __name__ == '__main__':
             body = email.MIMEText.MIMEText(res, 'html', 'utf-8')
             msg.attach(body) 
             ## write attachemtn into mail and send mail.
-            if len(urls) == 1:
-                mail.sendhtml(res, 'news')
-            else:
-                for url in urls:
-                    data = ts.notice_content(url)
-                    att = email.mime.text.MIMEText(data, 'plain', 'utf-8')
-                    att.add_header('content-disposition','attachment',filename='data.txt')
-                    #att["Content-Disposition"] = 'attachment; filename="data.txt"'
-                    msg.attach(att)
-                mail.sendWithAttachment(msg, 'news')
+            for url in urls:
+                data = ts.notice_content(url)
+                att = email.mime.text.MIMEText(data, 'plain', 'utf-8')
+                att.add_header('content-disposition','attachment',filename='data.txt')
+                #att["Content-Disposition"] = 'attachment; filename="data.txt"'
+                msg.attach(att)
+            mail.sendWithAttachment(msg, 'news')
 
