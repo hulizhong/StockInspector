@@ -12,7 +12,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')  
 #print 'sys.getdefaultencoding', sys.getdefaultencoding() 
 
-def realtime_quotes(codes, hasAlter):
+def realtime_quotes(codes, hasData):
     try:
         res = ts.get_realtime_quotes(codes)
         msg = ""
@@ -29,11 +29,11 @@ def realtime_quotes(codes, hasAlter):
             if (qRate > 3):
                 alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %d\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qVolume)
                 msgPositive += alterData
-                hasAlter.append('succeed')
+                hasData["has"] = True
             elif (qRate < -3):
                 alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %d\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qVolume)
                 msgNegative += alterData
-                hasAlter.append('succeed')
+                hasData["has"] = True
             else:
                 pass
         msg = msgPositive + "\r\n" + msgNegative
@@ -46,9 +46,9 @@ import email.MIMEMultipart
 
 if __name__ == '__main__':  
     codes = ["300458", "300369", "002467"]
-    hasAlter = []
+    hasAlter = {"has" : False}
     res = realtime_quotes(codes, hasAlter)
-    if len(hasAlter) != 0:
+    if hasAlter["has"]:
         mail = KingMail()
         mail.sendtxt(res, 'quotes')
 
