@@ -23,15 +23,16 @@ def realtime_quotes(codes, hasData):
             qStart = float(res.ix[row, 'open'])
             qClose = float(res.ix[row, 'pre_close'])
             qCurrent = float(res.ix[row, 'price'])
-            qVolume = int(res.ix[row, 'volume'])/100
+            #qVolume = int(res.ix[row, 'volume'])/100
+            qTime = res.ix[row, 'time']
             qRate = ((qCurrent-qStart)*100)/qStart
             qRate2 = ((qCurrent-qClose)*100)/qStart
             if (qRate > 3):
-                alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %d\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qVolume)
+                alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
                 msgPositive += alterData
                 hasData["has"] = True
             elif (qRate < -3):
-                alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %d\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qVolume)
+                alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
                 msgNegative += alterData
                 hasData["has"] = True
             else:
