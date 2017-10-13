@@ -31,6 +31,7 @@ class DBA(object):
         ## use fix price.
         self.fixPriceFlag = fixNowFlag
         self.fixPrice = fixValue
+        self.exceptList = ["300392.csv", "300431.csv", "002796.csv", "002071.csv", "002413", "002164.csv"]
 
 
     def __analyzePrice(self, filename):
@@ -81,7 +82,7 @@ class DBA(object):
             self.stdRateList.append(name)
         ## intersectionList = list(set(stdRateList).intersection(set(starList)))
         for name in self.stdRateList:            
-            if self.starList.count(name) != 0:
+            if self.starList.count(name) != 0 and self.exceptList.count(name) == 0:
                 self.tomorrowStarList.append(name)
 
         #print '\033[1;31;40m------------Sort with diff----------\033[0m'
@@ -178,8 +179,8 @@ if __name__ == '__main__':
     '''                              
     dba = DBA()
     #dba = DBA(fixNowFlag=True, fixValue=1.0)
-    #dba.analyzePrice()
-    #dba.printTomorrowStarLst()
+    dba.analyzePrice()
+    dba.printTomorrowStarLst()
     #dba.printStarLst()
     #dba.printStdRateLst()
     #dba.showLittle("300369.csv", 10.00)
