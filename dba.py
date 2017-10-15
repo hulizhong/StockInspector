@@ -146,9 +146,14 @@ class DBA(object):
         for file in self.starList:
             self.price(file)
 
-    def printTomorrowStarLst(self):
+    def printTomorrowStarLst(self, toFileFlag=False):
         '''
         '''
+        if toFileFlag == True:
+            fp = open("tomorrowStartLst.lst", "w")
+            for file in self.tomorrowStarList:
+                fp.write(file + "\n")
+            fp.close()
         for file in self.tomorrowStarList:
             self.price(file)
 
@@ -177,10 +182,10 @@ if __name__ == '__main__':
     '''                              
     analyze db.
     '''                              
-    dba = DBA()
-    #dba = DBA(fixNowFlag=True, fixValue=1.0)
+    #dba = DBA()
+    dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
     dba.analyzePrice()
-    dba.printTomorrowStarLst()
+    dba.printTomorrowStarLst(True)
     #dba.printStarLst()
     #dba.printStdRateLst()
     #dba.showLittle("300369.csv", 10.00)
