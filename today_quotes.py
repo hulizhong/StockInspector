@@ -46,7 +46,7 @@ def realtime_quotes(codes, hasData):
 import email.MIMEMultipart
 
 if __name__ == '__main__':  
-    codes = ["300458", "300369", "002467"]
+    codes = ["300458", "300369", "300273", "002344"]
     hasAlter = {"has" : False}
     res = realtime_quotes(codes, hasAlter)
     if hasAlter["has"]:

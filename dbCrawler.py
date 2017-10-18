@@ -85,6 +85,18 @@ class Crawler(object):
             time.sleep(6)
 
 
+    def downloadWithList(self, codeList):
+        '''
+        down load trading db to csv file.
+        '''
+        for it in codeList:
+            res = self.__download(it)
+            while res == False:
+                time.sleep(self.sleepTm)
+                res = self.__download(it)
+            time.sleep(6)
+
+
     def getCodeList(self):
         '''
         @brief: get A stock code list.
@@ -98,7 +110,9 @@ class Crawler(object):
 
 
 if __name__ == '__main__':  
-    cr = Crawler(endTime="2017-10-11")
+    cr = Crawler(endTime="2017-10-18")
     #cr.getCodeList()
-    cr.download()
+    #cr.download()
+    watchList = ["002344", "300273", "300369"]
+    cr.downloadWithList(watchList)
 
