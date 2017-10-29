@@ -37,8 +37,8 @@ class Crawler(object):
             filename = code + ".csv"
             #res = ts.get_h_data(code="300458", start="2015-01-11", end="2017-09-20")
             res = ts.get_h_data(code, self.startTm, self.endTm)
-            #if res != None:
-            res.to_csv(filename)
+            if res is not None:
+                res.to_csv(filename)
             return True
         except IOError, er:
             #print '1111', er.errno
@@ -110,7 +110,7 @@ class Crawler(object):
 
 
 if __name__ == '__main__':  
-    cr = Crawler(endTime="2017-10-18")
+    cr = Crawler(endTime="2017-10-27")
     #cr.getCodeList()
     #cr.download()
     watchList = ["002344", "300273", "300369"]

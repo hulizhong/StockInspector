@@ -38,17 +38,22 @@ class DBA(object):
         '''
         called by analyzePrice, return (diff, rate) base 80%-20% price.
         '''
-        res = pd.DataFrame.from_csv(filename)
-        itemsNum = len(res)
-        now = res['close'][0]
-        #closeOrder = res['close'].order()
-        closeOrder = res['close'].sort_values()
-        time4_5 = closeOrder[itemsNum*4/5]
-        time1_5 = closeOrder[itemsNum/5]
-        price1_10 = closeOrder[itemsNum/10]
-        diff = round(time4_5-time1_5, 2)
-        rate = round((time4_5-time1_5)*100/time1_5, 2)
-        return (diff, rate, price1_10, now)
+        try:
+            res = pd.DataFrame.from_csv(filename)
+            itemsNum = len(res)
+            now = res['close'][0]
+            #closeOrder = res['close'].order()
+            closeOrder = res['close'].sort_values()
+            time4_5 = closeOrder[itemsNum*4/5]
+            time1_5 = closeOrder[itemsNum/5]
+            price1_10 = closeOrder[itemsNum/10]
+            diff = round(time4_5-time1_5, 2)
+            rate = round((time4_5-time1_5)*100/time1_5, 2)
+            return (diff, rate, price1_10, now)
+        except Exception as er:
+            print filename, " >> ", er
+            return (0, 0, 0, 0)
+        
 
 
     def analyzePrice(self):
@@ -91,10 +96,13 @@ class DBA(object):
         #print dataDiff
 
 
-    def price(self, filename):
+    def price(self, filename, isColor=True):
         '''
         '''
-        print '\033[1;32;40m>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m', filename
+        if isColor:
+            print '\033[1;32;40m>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m', filename
+        else:
+            print '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', filename
         ##res = pd.core.frame.DataFrame.from_csv('qzkj.csv')
         res = pd.DataFrame.from_csv(filename)
         itemsNum = len(res)
@@ -127,7 +135,10 @@ class DBA(object):
         print '25%: ', closeOrder[itemsNum/4]
         print '20%: ', time1_5
         print '10%: ', closeOrder[itemsNum/10]
-        print '\033[1;31;40mdif(80-20):\033[0m', time4_5 - time1_5, ' \033[1;31;40mrate(diff/20):\033[0m', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0]
+        if isColor:
+            print '\033[1;31;40mdif(80-20):\033[0m', time4_5 - time1_5, ' \033[1;31;40mrate(diff/20):\033[0m', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0]
+        else:
+            print 'dif(80-20):', time4_5 - time1_5, ' rate(diff/20):', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0]
       
         #print '>>>>--------------->>>>>价值<?的日子里'
         #print res[res['close']<price1_3]
@@ -155,7 +166,7 @@ class DBA(object):
                 fp.write(file + "\n")
             fp.close()
         for file in self.tomorrowStarList:
-            self.price(file)
+            self.price(file, False)
 
     def showBig(self, filename, diffPri):
         '''
@@ -182,10 +193,19 @@ if __name__ == '__main__':
     '''                              
     analyze db.
     '''                              
-    #dba = DBA()
-    dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
+    dba = DBA(stdRate=40)
+    #dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
     dba.analyzePrice()
+    #dba.printTomorrowStarLst()
     dba.printTomorrowStarLst(True)
+
+    #dba.price("300369.csv")
+    #dba.showLittle("300369.csv", 9.80)
+    #dba.price("300273.csv")
+    #dba.showLittle("300273.csv", 10.50)
+    #dba.price("002344.csv")
+    #dba.showLittle("002344.csv", 8.08)
+
     #dba.printStarLst()
     #dba.printStdRateLst()
     #dba.showLittle("300369.csv", 10.00)
