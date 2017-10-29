@@ -48,11 +48,12 @@ class DBA(object):
             time1_5 = closeOrder[itemsNum/5]
             price1_10 = closeOrder[itemsNum/10]
             diff = round(time4_5-time1_5, 2)
-            rate = round((time4_5-time1_5)*100/time1_5, 2)
-            return (diff, rate, price1_10, now)
+            rate28 = round((time4_5-time1_5)*100/time1_5, 2)
+            rateNow = round((time4_5-now)*100/now, 2)
+            return (diff, rate28, price1_10, now, rateNow)
         except Exception as er:
             print filename, " >> ", er
-            return (0, 0, 0, 0)
+            return (0, 0, 0, 0, 0)
         
 
 
@@ -61,39 +62,45 @@ class DBA(object):
         @brief 
         '''
         postfix = 'csv'  
-        data = pd.DataFrame(columns=['name','diff','rate', '10%', 'now'])
+        data = pd.DataFrame(columns=['name', 'diff', '28rate', '10%', 'now', 'nowrate'])
         for file in os.listdir(self.dstPath):
             if file.endswith(postfix):
-                (diff, rate, price1_10, now) = self.__analyzePrice(file)
-                se = pd.Series([file, diff, rate, price1_10, now], index=['name','diff','rate','10%','now'])
+                (diff, rate28, price1_10, now, rateNow) = self.__analyzePrice(file)
+                se = pd.Series([file, diff, rate28, price1_10, now, rateNow], index=['name','diff','28rate','10%','now', 'nowrate'])
                 data = data.append(se, ignore_index=True)
                 ## rabinhu, find watch code.
                 fixNow = now
                 if self.fixPriceFlag == True:
                     fixNow = now - self.fixPrice
                 if price1_10 >= fixNow:
-                    print '\033[1;31;40m------------find Star: \033[0m', file
+                    #print '\033[1;31;40m------------find Star: \033[0m', file
                     self.starList.append(file)
         print '\033[1;31;40m------------Sort with rate----------\033[0m'
-        #dataRate = data.sort(columns='rate', ascending=False)
-        dataRate = data.sort_values(by='rate', ascending=False)
-        for idx, row in dataRate.iterrows():
-            print "%s, diff: %6.2f, rate: %6.2f, 10: %6.2f, now: %6.2f"% (row['name'], row['diff'], row['rate'], row['10%'], row['now'])
-
-
-        ## get intersection from stdRateList and starList.
-        stdRateName = dataRate[dataRate['rate']>self.stdRate]['name']
-        for idx, name in stdRateName.iteritems():
-            self.stdRateList.append(name)
-        ## intersectionList = list(set(stdRateList).intersection(set(starList)))
-        for name in self.stdRateList:            
-            if self.starList.count(name) != 0 and self.exceptList.count(name) == 0:
-                self.tomorrowStarList.append(name)
-
-        #print '\033[1;31;40m------------Sort with diff----------\033[0m'
-        ##dataDiff = data.sort(columns='diff', ascending=False)
-        #dataDiff = data.sort_values(by='diff', ascending=False)
-        #print dataDiff
+        sortByNowrate = True ## sort by nowrate.
+        #sortByNowrate = False ## sort by 28rate.
+        if sortByNowrate:
+            #dataRate = data.sort(columns='28rate', ascending=False)
+            dataRate = data.sort_values(by='nowrate', ascending=False)
+            for idx, row in dataRate.iterrows():
+                print "%s, diff: %6.2f, 28rate: %6.2f, 10: %6.2f, now: %6.2f, nowrate: %6.2f" % (row['name'], row['diff'], row['28rate'], row['10%'], row['now'], row['nowrate'])
+            ## get intersection from stdRateList and starList.
+            stdRateName = dataRate[dataRate['nowrate']>self.stdRate]['name']
+            for idx, name in stdRateName.iteritems():
+                self.stdRateList.append(name)
+            for name in self.stdRateList:            
+                if self.starList.count(name) != 0 and self.exceptList.count(name) == 0:
+                    self.tomorrowStarList.append(name)
+        else:
+            dataRate = data.sort_values(by='28rate', ascending=False)
+            for idx, row in dataRate.iterrows():
+                print "%s, diff: %6.2f, 28rate: %6.2f, 10: %6.2f, now: %6.2f, nowrate: %6.2f" % (row['name'], row['diff'], row['28rate'], row['10%'], row['now'], row['nowrate'])
+            ## get intersection from stdRateList and starList.
+            stdRateName = dataRate[dataRate['28rate']>self.stdRate]['name']
+            for idx, name in stdRateName.iteritems():
+                self.stdRateList.append(name)
+            for name in self.stdRateList:            
+                if self.starList.count(name) != 0 and self.exceptList.count(name) == 0:
+                    self.tomorrowStarList.append(name)
 
 
     def price(self, filename, isColor=True):
@@ -105,9 +112,10 @@ class DBA(object):
             print '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', filename
         ##res = pd.core.frame.DataFrame.from_csv('qzkj.csv')
         res = pd.DataFrame.from_csv(filename)
+        now = res['close'][0]
         itemsNum = len(res)
-
         print itemsNum  ##the number of items.
+
         print '-----------------价值划线'
         closeMax = res['close'].max()
         closeMin = res['close'].min()
@@ -128,6 +136,7 @@ class DBA(object):
         #print closeOrder
         time4_5 = closeOrder[itemsNum*4/5]
         time1_5 = closeOrder[itemsNum/5]
+        rateNow = round((time4_5-now)*100/now, 2)
         print '80%: ', time4_5
         print '75%: ', closeOrder[itemsNum*3/4]
         print '50%: ', closeOrder[itemsNum/2]
@@ -136,9 +145,9 @@ class DBA(object):
         print '20%: ', time1_5
         print '10%: ', closeOrder[itemsNum/10]
         if isColor:
-            print '\033[1;31;40mdif(80-20):\033[0m', time4_5 - time1_5, ' \033[1;31;40mrate(diff/20):\033[0m', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0]
+            print '\033[1;31;40mdif(80-20):\033[0m', time4_5 - time1_5, ' \033[1;31;40mrate(diff/20):\033[0m', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0], " nowrate: ", reateNow
         else:
-            print 'dif(80-20):', time4_5 - time1_5, ' rate(diff/20):', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0]
+            print 'dif(80-20):', time4_5 - time1_5, ' rate(diff/20):', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0], " nowrate: ", rateNow
       
         #print '>>>>--------------->>>>>价值<?的日子里'
         #print res[res['close']<price1_3]
@@ -196,8 +205,8 @@ if __name__ == '__main__':
     dba = DBA(stdRate=40)
     #dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
     dba.analyzePrice()
-    #dba.printTomorrowStarLst()
-    dba.printTomorrowStarLst(True)
+    dba.printTomorrowStarLst()
+    #dba.printTomorrowStarLst(True)
 
     #dba.price("300369.csv")
     #dba.showLittle("300369.csv", 9.80)
