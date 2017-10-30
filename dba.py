@@ -103,7 +103,7 @@ class DBA(object):
                     self.tomorrowStarList.append(name)
 
 
-    def price(self, filename, isColor=True):
+    def price(self, filename, isColor=False):
         '''
         '''
         if isColor:
@@ -145,7 +145,7 @@ class DBA(object):
         print '20%: ', time1_5
         print '10%: ', closeOrder[itemsNum/10]
         if isColor:
-            print '\033[1;31;40mdif(80-20):\033[0m', time4_5 - time1_5, ' \033[1;31;40mrate(diff/20):\033[0m', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0], " nowrate: ", reateNow
+            print '\033[1;31;40mdif(80-20):\033[0m', time4_5 - time1_5, ' \033[1;31;40mrate(diff/20):\033[0m', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0], " nowrate: ", rateNow
         else:
             print 'dif(80-20):', time4_5 - time1_5, ' rate(diff/20):', (time4_5-time1_5)*100/time1_5, " Now: ", res['close'][0], " nowrate: ", rateNow
       
@@ -174,6 +174,7 @@ class DBA(object):
             for file in self.tomorrowStarList:
                 fp.write(file + "\n")
             fp.close()
+
         for file in self.tomorrowStarList:
             self.price(file, False)
 
@@ -205,8 +206,8 @@ if __name__ == '__main__':
     dba = DBA(stdRate=40)
     #dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
     dba.analyzePrice()
-    dba.printTomorrowStarLst()
-    #dba.printTomorrowStarLst(True)
+    #dba.printTomorrowStarLst()
+    dba.printTomorrowStarLst(True)
 
     #dba.price("300369.csv")
     #dba.showLittle("300369.csv", 9.80)

@@ -96,6 +96,23 @@ class Crawler(object):
                 res = self.__download(it)
             time.sleep(6)
 
+    def downloadWithFile(self, filename):
+        '''
+        @brief: get A stock code list.
+        '''
+        fp = open(filename)
+        while True:
+            oriCode = fp.readline()
+            if not oriCode:
+                break;
+            code = oriCode[0:6]
+            res = self.__download(code)
+            while res == False:
+                time.sleep(self.sleepTm)
+                res = self.__download(code)
+            time.sleep(6)
+        fp.close()
+
 
     def getCodeList(self):
         '''
@@ -110,9 +127,10 @@ class Crawler(object):
 
 
 if __name__ == '__main__':  
-    cr = Crawler(endTime="2017-10-27")
+    cr = Crawler(endTime="2017-10-30")
     #cr.getCodeList()
     #cr.download()
-    watchList = ["002344", "300273", "300369"]
-    cr.downloadWithList(watchList)
+    #watchList = ["002344", "300273", "300369"]
+    #cr.downloadWithList(watchList)
+    cr.downloadWithFile("database/tomorrowStartLst.lst")
 
