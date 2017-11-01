@@ -21,6 +21,9 @@ def realtime_quotes(codes, hasData):
         rowNum = len(res)
         for row in range(rowNum):
             qStart = float(res.ix[row, 'open'])
+            ## stop board
+            if qStart == 0:
+                continue
             qClose = float(res.ix[row, 'pre_close'])
             qCurrent = float(res.ix[row, 'price'])
             #qVolume = int(res.ix[row, 'volume'])/100
@@ -46,7 +49,8 @@ def realtime_quotes(codes, hasData):
 import email.MIMEMultipart
 
 if __name__ == '__main__':  
-    codes = ["300458", "300369", "300273", "002344"]
+    #codes = ["300458", "300369", "300273", "002344"]
+    codes = ["300369", "002344", "300273", "300458", "300004", "300379"]
     hasAlter = {"has" : False}
     res = realtime_quotes(codes, hasAlter)
     if hasAlter["has"]:
