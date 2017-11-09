@@ -29,13 +29,13 @@ def realtime_quotes(codes, hasData):
             #qVolume = int(res.ix[row, 'volume'])/100
             qTime = res.ix[row, 'time']
             qRate = ((qCurrent-qStart)*100)/qStart
-            qRate2 = ((qCurrent-qClose)*100)/qStart
+            qRate2 = ((qCurrent-qClose)*100)/qClose
             if (qRate > 3):
-                alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
+                alterData = "    %s  r: %.2f(%.2f), p: %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
                 msgPositive += alterData
                 hasData["has"] = True
             elif (qRate < -3):
-                alterData = "    %s  %.2f(%.2f), %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
+                alterData = "    %s  r: %.2f(%.2f), p: %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
                 msgNegative += alterData
                 hasData["has"] = True
             else:
