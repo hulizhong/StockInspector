@@ -14,22 +14,27 @@ class KingMail(object):
     email sent class replace sms notify. 
     """
     def __init__(self, isSSL=True):
-        self.mailhost = "smtp.yeah.net"
-        self.user = "rabinhu"
-        self.encpswd = "0lz96ur77o"
-        self.sender = 'rabinhu@yeah.net'
-        self.receivers = ['rabinhu@126.com']
-        pswd = EncDecGraph()
-        if isSSL:
-            logger.infoLog('will connect mail server with ssl.')
-            self.smtpObj = smtplib.SMTP_SSL()
-            self.smtpObj.connect(self.mailhost, 465)
-        else:
-            logger.infoLog('will connect mail server with non-ssl.')
-            self.smtpObj = smtplib.SMTP()
-            self.smtpObj.connect(self.mailhost, 25)
-        logger.infoLog('will login mail server.')
-        self.smtpObj.login(self.user, pswd.dec(self.encpswd))  
+        try:
+            self.mailhost = "smtp.yeah.net"
+            self.user = "rabinhu"
+            self.encpswd = "0lz96ur77o"
+            self.sender = 'rabinhu@yeah.net'
+            self.receivers = ['rabinhu@126.com']
+            pswd = EncDecGraph()
+            if isSSL:
+                logger.infoLog('will connect mail server with ssl.')
+                self.smtpObj = smtplib.SMTP_SSL()
+                self.smtpObj.connect(self.mailhost, 465)
+            else:
+                logger.infoLog('will connect mail server with non-ssl.')
+                self.smtpObj = smtplib.SMTP()
+                self.smtpObj.connect(self.mailhost, 25)
+            logger.infoLog('will login mail server.')
+            self.smtpObj.login(self.user, pswd.dec(self.encpswd))  
+        except smtplib.SMTPException, e:
+            logger.errLog("Error: Login mail server Failed, cause:", e)
+        except:
+            logger.errLog("Error: __init__ failed.")
 
     def __del__(self):
         ### bug, Exception smtplib.SMTPServerDisconnected: SMTPServerDisconnected('Connection unexpectedly closed',)
@@ -50,8 +55,11 @@ class KingMail(object):
             #message['To'] = self.receivers
             message['To'] = ','.join(self.receivers)
             self.smtpObj.sendmail(self.sender, self.receivers, message.as_string())
+            return True
         except smtplib.SMTPException, e:
-            logger.errLog("Error: 无法发送邮件, cause:", e)
+            #logger.errLog("Error: 无法发送邮件, cause:", e)
+            logger.errLog("Error: Can's send mail, cause:", e)
+            return False
             #print isinstance(e.smtp_error, unicode)
             #print isinstance(e.smtp_error, 'utf-8')
             #print type(e)
@@ -72,8 +80,11 @@ class KingMail(object):
             #message['To'] = self.receivers
             message['To'] = ','.join(self.receivers)
             self.smtpObj.sendmail(self.sender, self.receivers, message.as_string())
+            return True
         except smtplib.SMTPException, e:
-            logger.errLog("Error: 无法发送邮件, cause:", e)
+            #logger.errLog("Error: 无法发送邮件, cause:", e)
+            logger.errLog("Error: Can's send mail, cause:", e)
+            return False
             #print isinstance(e.smtp_error, unicode)
             #print isinstance(e.smtp_error, 'utf-8')
             #print type(e)
@@ -92,8 +103,11 @@ class KingMail(object):
             #message['To'] = self.receivers
             message['To'] = ','.join(self.receivers)
             self.smtpObj.sendmail(self.sender, self.receivers, message.as_string())
+            return True
         except smtplib.SMTPException, e:
-            logger.errLog("Error: 无法发送邮件, cause:", e)
+            #logger.errLog("Error: 无法发送邮件, cause:", e)
+            logger.errLog("Error: Can's send mail, cause:", e)
+            return False
 
 
 #k = KingMail()

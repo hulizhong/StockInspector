@@ -31,16 +31,17 @@ def realtime_quotes(codes, hasData):
             qRate = ((qCurrent-qStart)*100)/qStart
             qRate2 = ((qCurrent-qClose)*100)/qClose
             if (qRate > 3):
-                alterData = "    %s  r: %.2f(%.2f), p: %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
+                alterData = "    %s  R: %.2f(%.2f), P: %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
                 msgPositive += alterData
                 hasData["has"] = True
             elif (qRate < -3):
-                alterData = "    %s  r: %.2f(%.2f), p: %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
+                alterData = "    %s  R: %.2f(%.2f), P: %.2f(%.2f), %s\r\n" % (res.ix[row, 'name'], qRate, qRate2, qCurrent, qClose, qTime)
                 msgNegative += alterData
                 hasData["has"] = True
             else:
                 pass
         msg = msgPositive + "\r\n" + msgNegative
+        #print msg
         return msg 
     except Exception, e:
         logger.errLog("Error: realtime_quotes", e)
@@ -52,8 +53,12 @@ if __name__ == '__main__':
     #codes = ["300458", "300369", "300273", "002344"]
     codes = ["300369", "002344", "300273", "300458", "300004", "300379"]
     hasAlter = {"has" : False}
-    res = realtime_quotes(codes, hasAlter)
+    mailContent = realtime_quotes(codes, hasAlter)
     if hasAlter["has"]:
         mail = KingMail()
-        mail.sendtxt(res, 'quotes')
+        res = mail.sendtxt(mailContent, 'quotes')
+        if res == False:
+            logger.errLog("Error: send quotes mail failed.")
+        else:
+            logger.errLog("Error: send quotes mail succeed.")
 
