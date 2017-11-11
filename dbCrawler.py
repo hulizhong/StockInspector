@@ -37,6 +37,7 @@ class Crawler(object):
             filename = code + ".csv"
             #res = ts.get_h_data(code="300458", start="2015-01-11", end="2017-09-20")
             res = ts.get_h_data(code, self.startTm, self.endTm)
+            #cant use if res != None:
             if res is not None:
                 res.to_csv(filename)
             return True
@@ -125,12 +126,17 @@ class Crawler(object):
         gem = ts.get_gem_classified()
         gem.to_csv(self.fileGem)
 
+    def tst(self, code):
+        self.__download(code)
 
 if __name__ == '__main__':  
-    cr = Crawler(endTime="2017-10-30")
+    cr = Crawler(endTime="2017-11-10")
+    #cr.download()
     #cr.getCodeList()
     #cr.download()
     #watchList = ["002344", "300273", "300369"]
+    #watchList = ["300369"]
     #cr.downloadWithList(watchList)
-    cr.downloadWithFile("database/tomorrowStartLst.lst")
+    ## the task in weekday.
+    #cr.downloadWithFile("database/tomorrowStartLst.lst")
 
