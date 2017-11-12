@@ -26,6 +26,8 @@ class Crawler(object):
         self.fileSme = "codelst/sme.csv"
         ##save chuangyeban list.
         self.fileGem = "codelst/gem.csv"
+        self.fileIndustry = "codelst/industry.csv"
+        self.fileConcept = "codelst/concept.csv"
         ##download time interval second.
         self.sleepTm = 60
 
@@ -50,29 +52,44 @@ class Crawler(object):
             return False
 
 
-    def download(self):
+    def download(self, type):
         '''
         down load trading db to csv file.
         '''
-        ### zhongXiaoBan
-        #dfSme = pd.DataFrame.from_csv(self.fileSme)
-        #seSmeCodeLst = dfSme['code']
-        #smeLst = []
-        #for idx, code in seSmeCodeLst.iteritems():
-        #    smeLst.append("00" + str(code))
-        #count = 0
-        #for it in smeLst:
-        #    res = self.__download(it)
-        #    while res == False:
-        #        time.sleep(self.sleepTm)
-        #        res = self.__download(it)
-        #    #count = count + 1
-        #    #if count == 2:
-        #    #    count = 0
-        #    #    time.sleep(self.sleepTm)
-        #    time.sleep(6)
+        if type == "sme":
+            self.__downloadSme()
+        elif type == "gem":
+            self.__downloadGem()
+        elif type == "industry":
+            self.__downloadIndustry()
+        elif type == "concept":
+            self.__downloadConcept()
 
-        ## chuangYeBan
+    def __downloadSme(self):
+        '''
+        zhongXiaoBan
+        '''
+        dfSme = pd.DataFrame.from_csv(self.fileSme)
+        seSmeCodeLst = dfSme['code']
+        smeLst = []
+        for idx, code in seSmeCodeLst.iteritems():
+            smeLst.append("00" + str(code))
+        count = 0
+        for it in smeLst:
+            res = self.__download(it)
+            while res == False:
+                time.sleep(self.sleepTm)
+                res = self.__download(it)
+            #count = count + 1
+            #if count == 2:
+            #    count = 0
+            #    time.sleep(self.sleepTm)
+            time.sleep(6)
+
+    def __downloadGem(self):
+        '''
+        chuangYeBan
+        '''
         dfGem = pd.DataFrame.from_csv(self.fileGem)
         seGemCodeLst = dfGem['code']
         gemLst = []
@@ -84,6 +101,34 @@ class Crawler(object):
                 time.sleep(self.sleepTm)
                 res = self.__download(it)
             time.sleep(6)
+
+    def __downloadIndustry(self):
+        '''
+        '''
+        dfIndustry = pd.DataFrame.from_csv(self.fileIndustry)
+        seIndustryCodeLst = dfIndustry['code']
+        industryLst = []
+        for idx, code in seIndustryCodeLst.iteritems():
+            if len(str(code)) == 3:
+                industryLst.append('000' + str(code))
+            elif len(str(code)) == 2:
+                industryLst.append('0000' + str(code))
+            elif len(str(code)) == 1:
+                industryLst.append('00000' + str(code))
+            else:
+                industryLst.append(str(code))
+        for it in industryLst:
+            res = self.__download(it)
+            if res == False:
+                print 'download failed. ', code
+                time.sleep(self.sleepTm)
+                #res = self.__download(it)
+            time.sleep(6)
+
+    def __downloadConcept(self):
+        '''
+        '''
+        pass
 
 
     def downloadWithList(self, codeList):
@@ -108,35 +153,58 @@ class Crawler(object):
                 break;
             code = oriCode[0:6]
             res = self.__download(code)
-            while res == False:
+            if res == False:
+                print 'download failed. ', code
                 time.sleep(self.sleepTm)
-                res = self.__download(code)
             time.sleep(6)
         fp.close()
 
-
-    def getCodeList(self):
+    def getCodeList(self, type):
         '''
         @brief: get A stock code list.
         '''
-        ### zhongXiaoBan
-        #sme = ts.get_sme_classified()
-        #sme.to_csv(self.fileSme)
+        if type == "sme":
+            self.__getSmeList()
+        elif type == "gem":
+            self.__getGemList()
+        elif type == "industry":
+            self.__getIndustryList()
+        elif type == "concept":
+            self.__getConceptList()
+
+    def __getSmeList(self):
+        ## zhongXiaoBan
+        sme = ts.get_sme_classified()
+        sme.to_csv(self.fileSme)
+
+    def __getGemList(self):
         ## chuangYeBan
         gem = ts.get_gem_classified()
         gem.to_csv(self.fileGem)
 
+    def __getIndustryList(self):
+        industry = ts.get_industry_classified()
+        industry.to_csv(self.fileIndustry)
+        #industry.to_excel("codelst/industry.xlsx")
+
+    def __getConceptList(self):
+        concept = ts.get_concept_classified()
+        concept.to_csv(self.fileConcept)
+
     def tst(self, code):
         self.__download(code)
+
 
 if __name__ == '__main__':  
     cr = Crawler(endTime="2017-11-10")
     #cr.download()
-    #cr.getCodeList()
-    #cr.download()
+    #cr.getCodeList("sme")
+    #cr.getCodeList("industry")
+    #cr.getCodeList("concept")
+    #cr.download("industry")
     #watchList = ["002344", "300273", "300369"]
     #watchList = ["300369"]
     #cr.downloadWithList(watchList)
     ## the task in weekday.
-    #cr.downloadWithFile("database/tomorrowStartLst.lst")
+    cr.downloadWithFile("codelst/list")
 
