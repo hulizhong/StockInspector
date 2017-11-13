@@ -204,15 +204,15 @@ if __name__ == '__main__':
     analyze db.
     '''                              
     dba = DBA(stdRate=40)
-    #dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
+    ##dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
     dba.analyzePrice()
-    #dba.printTomorrowStarLst()
-    dba.printTomorrowStarLst(True)
+    dba.printTomorrowStarLst()
+    #dba.printTomorrowStarLst(True)
 
     #dba.price("300369.csv")
     #dba.showLittle("300369.csv", 9.80)
     #dba.price("300273.csv")
-    #dba.showLittle("300273.csv", 10.50)
+    #dba.showLittle("300273.csv", 10.10)
     #dba.price("002344.csv")
     #dba.showLittle("002344.csv", 8.08)
 

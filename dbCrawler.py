@@ -45,10 +45,10 @@ class Crawler(object):
             return True
         except IOError, er:
             #print '1111', er.errno
-            print time.time(), " >> ", er
+            print time.time(), "(", code, ") >> ", er
             return False
         except Exception as er:
-            print time.time(), " >> ", er
+            print time.time(), "(", code, ") >> ", er
             return False
 
 
@@ -74,16 +74,11 @@ class Crawler(object):
         smeLst = []
         for idx, code in seSmeCodeLst.iteritems():
             smeLst.append("00" + str(code))
-        count = 0
         for it in smeLst:
             res = self.__download(it)
             while res == False:
                 time.sleep(self.sleepTm)
                 res = self.__download(it)
-            #count = count + 1
-            #if count == 2:
-            #    count = 0
-            #    time.sleep(self.sleepTm)
             time.sleep(6)
 
     def __downloadGem(self):
@@ -119,10 +114,9 @@ class Crawler(object):
                 industryLst.append(str(code))
         for it in industryLst:
             res = self.__download(it)
-            if res == False:
-                print 'download failed. ', code
+            while res == False:
                 time.sleep(self.sleepTm)
-                #res = self.__download(it)
+                res = self.__download(it)
             time.sleep(6)
 
     def __downloadConcept(self):
@@ -153,11 +147,12 @@ class Crawler(object):
                 break;
             code = oriCode[0:6]
             res = self.__download(code)
-            if res == False:
-                print 'download failed. ', code
+            while res == False:
                 time.sleep(self.sleepTm)
+                res = self.__download(it)
             time.sleep(6)
         fp.close()
+
 
     def getCodeList(self, type):
         '''
