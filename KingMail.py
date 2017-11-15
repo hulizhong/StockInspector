@@ -24,6 +24,11 @@ class KingMail(object):
             if isSSL:
                 logger.infoLog('will connect mail server with ssl.')
                 self.smtpObj = smtplib.SMTP_SSL()
+                ##when has error and u can't see before, then u can set debug switch and analysis it.
+                ##Q1: app rasie SMTPServerDisconnected('Connection unexpectedly closed',)
+                ##Q1: http://feedback.mail.126.com/antispam/complain.php?user=rabinhu@yeah.net
+                ## A1: the yeah.net anti spam.
+                #self.smtpObj.set_debuglevel(1)
                 self.smtpObj.connect(self.mailhost, 465)
             else:
                 logger.infoLog('will connect mail server with non-ssl.')
@@ -58,7 +63,7 @@ class KingMail(object):
             return True
         except smtplib.SMTPException, e:
             #logger.errLog("Error: 无法发送邮件, cause:", e)
-            logger.errLog("Error: Can's send mail, cause:", e)
+            logger.errLog("Error: sendtxt can't send mail, cause:", e)
             return False
             #print isinstance(e.smtp_error, unicode)
             #print isinstance(e.smtp_error, 'utf-8')
@@ -83,7 +88,7 @@ class KingMail(object):
             return True
         except smtplib.SMTPException, e:
             #logger.errLog("Error: 无法发送邮件, cause:", e)
-            logger.errLog("Error: Can's send mail, cause:", e)
+            logger.errLog("Error: sendhtml can't send mail, cause:", e)
             return False
             #print isinstance(e.smtp_error, unicode)
             #print isinstance(e.smtp_error, 'utf-8')
@@ -106,12 +111,15 @@ class KingMail(object):
             return True
         except smtplib.SMTPException, e:
             #logger.errLog("Error: 无法发送邮件, cause:", e)
-            logger.errLog("Error: Can's send mail, cause:", e)
+            logger.errLog("Error: sendWithAttachment can't send mail, cause:", e)
             return False
 
-
-#k = KingMail()
-#fs = open("/home/RabinHu/StockInspector/conf.xml")
-#dt = fs.read()
-#k.sendhtml(dt, 'news')
+if __name__ == '__main__':
+    '''
+    for test.
+    '''
+    k = KingMail()
+    fs = open("/home/RabinHu/StockInspector/conf.xml")
+    dt = fs.read()
+    k.sendhtml(dt, 'news')
 
