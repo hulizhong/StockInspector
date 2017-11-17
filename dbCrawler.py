@@ -149,7 +149,7 @@ class Crawler(object):
             res = self.__download(code)
             while res == False:
                 time.sleep(self.sleepTm)
-                res = self.__download(it)
+                res = self.__download(code)
             time.sleep(6)
         fp.close()
 
@@ -191,7 +191,7 @@ class Crawler(object):
 
 
 if __name__ == '__main__':  
-    cr = Crawler(endTime="2017-11-10")
+    cr = Crawler(endTime="2017-11-16")
     #cr.download()
     #cr.getCodeList("sme")
     #cr.getCodeList("industry")
@@ -201,5 +201,5 @@ if __name__ == '__main__':
     #watchList = ["300369"]
     #cr.downloadWithList(watchList)
     ## the task in weekday.
-    cr.downloadWithFile("codelst/list")
+    cr.downloadWithFile("tomorrowStartLst.lst")
 

@@ -51,7 +51,7 @@ import email.MIMEMultipart
 
 if __name__ == '__main__':  
     #codes = ["300458", "300369", "300273", "002344"]
-    codes = ["300369", "002344", "300273", "300458", "300004", "300379"]
+    codes = ["300369", "002344", "300273", "002818", "300458", "300004", "300379"]
     hasAlter = {"has" : False}
     mailContent = realtime_quotes(codes, hasAlter)
     if hasAlter["has"]:
@@ -60,5 +60,5 @@ if __name__ == '__main__':
         if res == False:
             logger.errLog("Error: send quotes mail failed.")
         else:
-            logger.errLog("Error: send quotes mail succeed.")
+            logger.infoLog("Info: send quotes mail succeed.")
 
