@@ -205,9 +205,10 @@ if __name__ == '__main__':
     '''                              
     dba = DBA(stdRate=40)
     ##dba = DBA(stdRate=40, fixNowFlag=True, fixValue=1.5)
-    dba.analyzePrice()
-    dba.printTomorrowStarLst()
+    #dba.analyzePrice()
+    #dba.printTomorrowStarLst()
     #dba.printTomorrowStarLst(True)
+    dba.price("300458.csv")
 
     #dba.price("300369.csv")
     #dba.showLittle("300369.csv", 9.80)
