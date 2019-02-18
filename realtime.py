@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # coding=utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')  
 
 import sys
 import tushare as ts  
 
 def getRealtime(whichList):
-    codes = ["601313", "002763", "002344", "300369", "002250", "300004", "600433", "399006"]
+    # 300393 中来股份, 300467 迅游科技
+    codes = ["601360", "002763", "002250", "002344", "300004", "300369", "300393", "600433", "300467", "399006"]
     if whichList == '0':
         pass
     elif whichList == '1':
@@ -17,7 +21,7 @@ def getRealtime(whichList):
         pass
 
     res = ts.get_realtime_quotes(codes)
-    print "   name,     close,     open,isUP,   price,    diff,     high,     low,        volume"
+    print "   name,     close,     open,isUP,   price,     diff,     high,     low,        volume"
     for index, row in res.iterrows():
         diffValue = float(float(row["price"]) - float(row["open"]))
         if len(row["name"]) == 3:
@@ -33,6 +37,12 @@ def getRealtime(whichList):
 
 if __name__ == '__main__':
     '''
+    try:
+        pro = ts.pro_api('de9b1451bddbd602befadae7d472354e3306e6b3b33561ec33404627')
+        df = pro.repurchase(ts_code='300369', ann_date='20180101')
+        print df
+    except Exception as err:
+        print err
     '''
     if len(sys.argv) == 2:
         arg = sys.argv[1]

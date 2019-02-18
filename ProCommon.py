@@ -3,5 +3,5 @@
 
 from Logger import Logger
 
-logger = Logger("/home/RabinHu/StockInspector/conf.xml", "/var/log/kingNotify.log")
+logger = Logger("conf.xml", "msg.log")
 

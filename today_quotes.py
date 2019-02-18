@@ -51,7 +51,7 @@ import email.MIMEMultipart
 
 if __name__ == '__main__':  
     #codes = ["300458", "300369", "300273", "002344"]
-    codes = ["300369", "002344", "300273", "002818", "300458", "300004", "300379"]
+    codes = ["300369", "002344", "300273", "002818", "300458", "300004", "300379", "300467"]
     hasAlter = {"has" : False}
     mailContent = realtime_quotes(codes, hasAlter)
     if hasAlter["has"]:
