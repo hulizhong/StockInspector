@@ -8,17 +8,25 @@ import sys
 import tushare as ts  
 
 def getRealtime(whichList):
-    # 300393 中来股份, 300467 迅游科技
-    codes = ["601360", "002763", "002250", "002344", "300004", "300369", "300393", "600433", "300467", "399006"]
-    if whichList == '0':
-        pass
-    elif whichList == '1':
-        codes.append("300458")
-        codes.append("300273")
-        codes.append("600598")
-        codes.append("002818")
-    else:
-        pass
+    codes = []
+    if whichList == '1' or whichList == '0':
+        codes.append("601006") #大秦铁路 <8
+        codes.append("002344") #海宁皮城 <4
+        codes.append("002763") #汇洁股份
+        codes.append("601360") #360
+        codes.append("300393") #中来股份
+        codes.append("300467") #迅游科技
+    if whichList == '2' or whichList == '0':
+        codes.append("002250") #联化科技
+        codes.append("300004") #南风股份
+        codes.append("300369") #绿盟科技
+        codes.append("600433") #冠豪高新
+        codes.append("300458") #全志科技
+        codes.append("300273") #和佳股份
+        codes.append("600598") #北大荒
+        codes.append("002818") #富森美
+    #codes.append("") #
+    codes.append("399006") #创业板指
 
     res = ts.get_realtime_quotes(codes)
     print "   name,     close,     open,isUP,   price,     diff,     high,     low,        volume"
@@ -47,5 +55,5 @@ if __name__ == '__main__':
     if len(sys.argv) == 2:
         arg = sys.argv[1]
     else:
-        arg = "3"
+        arg = "0"
     getRealtime(arg)
