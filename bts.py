@@ -124,7 +124,7 @@ class ReqClient(object):
             if bidstr[5] != "<":
                 bidH = float(bidstr)
             else:
-                bidstr = bidstr[0:4]
+                bidstr = bidstr[0:5]
                 bidH = float(bidstr)
             res["Hig"] = bidH
 	     
@@ -135,7 +135,7 @@ class ReqClient(object):
             if bidstr[5] != "<":
                 bidL = float(bidstr)
             else:
-                bidstr = bidstr[0:4]
+                bidstr = bidstr[0:5]
                 bidL = float(bidstr)
             res["Low"] = bidL
             res["10%"] = round((bidH-bidL)/10.0 + bidL, 3)
@@ -148,11 +148,10 @@ class ReqClient(object):
             f.seek(idx+14, 0)
             bidstr = f.read(6)
             bidC = float(bidstr)
-            print "---------", bidstr 
             if bidstr[5] != "<":
                 bidC = float(bidstr)
             else:
-                bidstr = bidstr[0:4]
+                bidstr = bidstr[0:5]
                 bidC = float(bidstr)
             res["Now"] = bidC
             res["Nam"] = name
