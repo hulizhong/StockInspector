@@ -188,19 +188,20 @@ class ReqClient(object):
 
 if __name__ == '__main__':
     '''
-        {"url": "https://gateio.io/trade/BTM_USDT", "name": "btm"},
-        {"url": "https://gateio.io/trade/BTO_USDT", "name": "bto"},
-        {"url": "https://gateio.io/trade/LRC_USDT", "name": "lrc"},
-        {"url": "https://gateio.io/trade/BTS_USDT", "name": "bts"},
-        {"url": "https://gateio.io/trade/IOTA_USDT", "name": "iota"},
-        {"url": "https://gateio.io/trade/AE_USDT", "name": "ae"},
+        {"url": "https://gateio.news/trade/BTM_USDT", "name": "btm"},
+        {"url": "https://gateio.news/trade/BTO_USDT", "name": "bto"},
+        {"url": "https://gateio.news/trade/LRC_USDT", "name": "lrc"},
+        {"url": "https://gateio.news/trade/BTS_USDT", "name": "bts"},
+        {"url": "https://gateio.news/trade/IOTA_USDT", "name": "iota"},
+        {"url": "https://gateio.news/trade/AE_USDT", "name": "ae"},
     '''
     urls = [
-        {"url": "https://gateio.io/trade/BTM_USDT", "name": "btm"},
-        {"url": "https://gateio.io/trade/BTO_USDT", "name": "bto"},
-        {"url": "https://gateio.io/trade/LRC_USDT", "name": "lrc"},
-        {"url": "https://gateio.io/trade/BTS_USDT", "name": "bts"},
-        {"url": "https://gateio.io/trade/IOTA_USDT", "name": "iota"},
+        {"url": "https://gateio.news/trade/BTM_USDT", "name": "btm"},
+        {"url": "https://gateio.news/trade/BAT_USDT", "name": "bat"},
+        {"url": "https://gateio.news/trade/BTO_USDT", "name": "bto"},
+        {"url": "https://gateio.news/trade/IOTA_USDT", "name": "iota"},
+        {"url": "https://gateio.news/trade/LRC_USDT", "name": "lrc"},
+        {"url": "https://gateio.news/trade/BTS_USDT", "name": "bts"},
        ]
     req = ReqClient()
     resp = req.getPage(urls)
