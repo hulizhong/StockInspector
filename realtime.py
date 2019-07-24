@@ -6,20 +6,24 @@ import tushare as ts
 reload(sys)
 sys.setdefaultencoding('utf8')  
 
-def insertHandingCode(codes):
+def insertHandingCode(dic, codes):
     '''
     持仓区
     '''
-    codes.append("600016") #民生银行 <5.95, 650
-    codes.append("000402") #金融街 <5.95, 650
-    codes.append("002253") #川大智胜 15.45
-    codes.append("002818") #富森美
+    dic["600016"] = 1100 #民生银行 <5.95, 650
+    dic["000402"] = 800 #金融街 <5.95, 650
+    dic["600266"] = 600 #北京城建 <8
+    dic["002253"] = 200 #川大智胜 15.45
+    dic["002818"] = 170 #富森美
+    dic["000423"] = 0   #
+    for it in dic.keys():
+        codes.append(it)
 
 def insertTraceCode(dic, codes):
     '''
     长期跟踪区；
     '''
-    dic["000423"] = 40  #东阿阿胶 <40, 190715/30.
+    dic["000423"] = 30  #东阿阿胶 <40, 190715/30.
     dic["601006"] = 7   #大秦铁路 <8, 190715/7.
     dic["000581"] = 18  #威孚高科 <
     dic["002344"] = 4   #海宁皮城 <4
@@ -66,10 +70,11 @@ def getRealtime(whichList):
     ## Step 1. set the codes.
     codes = []
     if whichList == '1' or whichList == '0': #----持仓区
-        insertHandingCode(codes)
+        volDic = {} #volume.
+        insertHandingCode(volDic, codes)
     if whichList == '2' or whichList == '0': #----入手区，跟踪区
-        dic = {}
-        insertTraceCode(dic, codes)
+        priDic = {} #price
+        insertTraceCode(priDic, codes)
     if whichList == '3' or whichList == '0': #-----破净观察区
         insertPbLess1Code(codes)
     if whichList == '4' or whichList == '0': #----观察区
@@ -85,6 +90,7 @@ def getRealtime(whichList):
     ## Step 3. get the realtime quotes.
     res = ts.get_realtime_quotes(uniqueCodes)
     print "   name,     close,     open,isUP,   price,     diff,     high,     low,    rate,       volume"
+    todayPL = 0.0  # today's profit and loss.
     for index, row in res.iterrows():
         #diffValue = float(float(row["price"]) - float(row["open"]))
         diffValue = float(float(row["price"]) - float(row["pre_close"]))
@@ -96,8 +102,18 @@ def getRealtime(whichList):
             isup = "Y"
         else:
             isup = "N"
-        print "%4s  %8s  %8s  %2s  %8s  %8s  %8s  %8s  %6s  %12s" % (row["name"], row["pre_close"], row["open"], isup, row["price"], diffValue, row["high"], row["low"], rateStr, row["volume"]) 
-        #print row["name"], row["pre_close"], row["open"], isup, row["price"], row["high"], row["low"], row["volume"]
+
+        if whichList == '1': 
+            if volDic.has_key(row["code"]):
+                itemPL = diffValue * int(volDic[row["code"]]) #volume.
+                todayPL += itemPL;
+                print "%4s  %8s  %8s  %2s  %8s  %8s  %8s  %8s  %6s  %12s  %6s" % (row["name"], row["pre_close"], row["open"], isup, row["price"], diffValue, row["high"], row["low"], rateStr, row["volume"], itemPL) 
+            else:
+                print "%4s  %8s  %8s  %2s  %8s  %8s  %8s  %8s  %6s  %12s" % (row["name"], row["pre_close"], row["open"], isup, row["price"], diffValue, row["high"], row["low"], rateStr, row["volume"]) 
+        else:
+            print "%4s  %8s  %8s  %2s  %8s  %8s  %8s  %8s  %6s  %12s" % (row["name"], row["pre_close"], row["open"], isup, row["price"], diffValue, row["high"], row["low"], rateStr, row["volume"]) 
+    if whichList == '1':
+        print "----------- today's profit.", todayPL
     #print res
 
 def autoTrace():
