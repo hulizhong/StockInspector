@@ -6,6 +6,8 @@ import pandas as pd
 import datetime
 from  KingMail import KingMail
 from ProCommon import logger
+from CodeList import DataItem, StockRepository
+from CodeList import insertWatchCode, insertPbLess1Code, insertTraceCode, insertHandingCode
   
 import sys
 reload(sys)
@@ -50,8 +52,8 @@ def realtime_quotes(codes, hasData):
 import email.MIMEMultipart
 
 if __name__ == '__main__':  
-    #codes = ["300458", "300369", "300273", "002344"]
-    codes = ["300369", "002344", "300273", "002818", "300458", "300004", "300379", "300467"]
+    codes = []
+    insertHandingCode({}, codes, "no-use-str")
     hasAlter = {"has" : False}
     mailContent = realtime_quotes(codes, hasAlter)
     if hasAlter["has"]:

@@ -8,6 +8,8 @@ import datetime
 import time
 from  KingMail import KingMail
 from ProCommon import logger
+from CodeList import DataItem, StockRepository
+from CodeList import insertWatchCode, insertPbLess1Code, insertTraceCode, insertHandingCode
   
 import sys
 reload(sys)
@@ -32,8 +34,9 @@ import email.MIMEMultipart# import MIMEMultipart
 #import email.MIMEBase# import MIMEBase  
 #import mimetypes  
 
-if __name__ == '__main__':  
-    codes = ["300458", "300369", "002467"]
+if __name__ == '__main__':
+    codes = []
+    insertHandingCode({}, codes, "no-use-str")
     checktm = datetime.datetime.now().strftime('%Y-%m-%d');
     for code in codes:
         urls = []

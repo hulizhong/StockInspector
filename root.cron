@@ -3,9 +3,14 @@ MAILTO=""
 # (/tmp/crontab.hS4iAV/crontab installed on Sat Jul 15 21:56:10 2017)
 # (Cron version -- $Id: crontab.c,v 2.13 1994/01/17 03:20:37 vixie Exp $)
 ## news alter.
-0 6-23/1 * * * /usr/bin/python /home/RabinHu/StockInspector/news.py
+0 6-23/1 * * * /usr/bin/python /home/rabin/StockInspector/news.py
+
+## tracking alter. (run at 10:00, 14:50 at every day.)
+0 10 * * * /usr/bin/python /home/rabin/StockInspector/tracking_price.py
+50 14 * * * /usr/bin/python /home/rabin/StockInspector/tracking_price.py
+
 ## realtime quotes alter.
-30-59/5 9 * * 1-5 /usr/bin/python /home/RabinHu/StockInspector/today_quotes.py
-*/5 10 * * 1-5 /usr/bin/python /home/RabinHu/StockInspector/today_quotes.py
-0-30/5 11 * * 1-5 /usr/bin/python /home/RabinHu/StockInspector/today_quotes.py
-*/5 13-14/1 * * 1-5 /usr/bin/python /home/RabinHu/StockInspector/today_quotes.py
+30-59/5 9 * * 1-5 /usr/bin/python /home/rabin/StockInspector/today_quotes.py
+*/5 10 * * 1-5 /usr/bin/python /home/rabin/StockInspector/today_quotes.py
+0-30/5 11 * * 1-5 /usr/bin/python /home/rabin/StockInspector/today_quotes.py
+*/5 13-14/1 * * 1-5 /usr/bin/python /home/rabin/StockInspector/today_quotes.py
