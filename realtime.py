@@ -6,16 +6,92 @@ import tushare as ts
 reload(sys)
 sys.setdefaultencoding('utf8')  
 
-def insertHandingCode(dic, codes):
+class DataItem(object):
+    '''
+    StockRepository's data item.
+    '''
+    def __init__(self, code, name, date, price, volume):
+        self.code = code
+        self.name = name
+        self.date = date
+        self.price = price
+        self.volume = volume
+        self.amount = price * volume
+
+    def des(self):
+        print self.date, self.name, self.price, "*", self.volume, "=", self.amount
+
+class StockRepository(object):
+    '''
+    stock trace repository.
+    '''
+    def __init__(self):
+        self.datas = {}
+
+    def push(self, item):
+        if self.datas.has_key(item.code):
+            self.datas[item.code].append(item)
+        else:
+            self.datas[item.code] = []
+            self.datas[item.code].append(item)
+
+    def des(self):
+        print "|-----------------------------------|"
+        for key,value in self.datas.items():
+            #print "|....................%6s %10s|" % (key, value[0].name) 
+            print "|%6s %10s                    |" % (key, value[0].name) 
+            volume = 0
+            amount = 0.0
+            for item in value:
+                print "|%8s %6s * %5s = %9s|" % (item.date, str(item.price), str(item.volume), str(item.amount)) 
+                volume += item.volume
+                amount += item.amount
+            if (volume < 0):
+                volume /= -1
+            print "|    vol.%5s      amount.%9s|" % (str(volume), str(amount)) 
+        print "|-----------------------------------|"
+
+    def getVolume(self, code):
+        if self.datas.has_key(code):
+            val = self.datas[code]
+            volume = 0
+            for item in val:
+                volume += item.volume
+
+            if (volume < 0):
+                volume /= -1
+            print "Get the code.%s vol.%s" %(code, volume)
+            return volume
+        else:
+            return 0
+
+
+def insertHandingCode(dic, codes, flag):
     '''
     持仓区
     '''
-    dic["600016"] = 1100 #民生银行 <5.95, 650
-    dic["000402"] = 800 #金融街 <5.95, 650
-    dic["600266"] = 600 #北京城建 <8
-    dic["002253"] = 200 #川大智胜 15.45
-    dic["002818"] = 170 #富森美
-    dic["000423"] = 0   #
+    #it = DataItem('000236', '测试名称', '190806', 8.54, 100)
+    #it.des()
+
+    sr = StockRepository()
+    sr.push(DataItem('600016', '民生银行', '190423', 6.47, -1100))
+    sr.push(DataItem('000402', '--金融街', '190422', 8.51, 800))
+    sr.push(DataItem('000402', '', '190802', 7.35, -800))
+    sr.push(DataItem('000402', '', '190809', 7.24, 1200))
+    sr.push(DataItem('600266', '北京城建', '190723', 8.24, -600))
+    sr.push(DataItem('600266', '', '190802', 7.8, 600))
+    sr.push(DataItem('002818', '--富森美', '190430', 14.75, -170)) #25.08 * -100
+    sr.push(DataItem('002818', '', '190806', 11.49, 170))
+    sr.push(DataItem('002253', '川大智胜', '190624', 15.45, -200))
+    sr.push(DataItem('002253', '', '190806', 13.49, 200))
+    if (flag == '11'):
+        sr.des()
+
+    dic['600016'] = sr.getVolume('600016'); #民生银行 <5.95, 650
+    dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
+    dic['600266'] = sr.getVolume('600266'); #北京城建 <8
+    dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
+    dic['002818'] = sr.getVolume('002818'); #富森美
     for it in dic.keys():
         codes.append(it)
 
@@ -69,9 +145,9 @@ def insertWatchCode(codes):
 def getRealtime(whichList):
     ## Step 1. set the codes.
     codes = []
-    if whichList == '1' or whichList == '0': #----持仓区
+    if whichList == '1' or whichList == '0' or whichList == '11': #----持仓区
         volDic = {} #volume.
-        insertHandingCode(volDic, codes)
+        insertHandingCode(volDic, codes, whichList)
     if whichList == '2' or whichList == '0': #----入手区，跟踪区
         priDic = {} #price
         insertTraceCode(priDic, codes)
