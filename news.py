@@ -19,7 +19,6 @@ sys.setdefaultencoding('utf8')
 def notices(code, urls, tm):
     try:
         res = ts.get_notices(code, tm)
-        ##print len(tuple(res.index)), len(res)#, res.nrow()
         idxNum = len(res)
         for idx in range(idxNum):
             contentUrl = res.ix[idx, 'url']
@@ -43,7 +42,7 @@ if __name__ == '__main__':
         res = notices(code, urls, checktm)
         if res != None:
             recordfile = "/tmp/" + code + ".news"
-            if (os.path.isfile(recordfile)):
+            if (os.path.isfile(recordfile)): #write the flag file to avoid one news report many times in a day.
                 filectime = os.stat(recordfile).st_ctime
                 filectimestr = time.strftime('%Y-%m-%d',time.localtime((filectime)))
                 if checktm != filectimestr:
@@ -65,7 +64,7 @@ if __name__ == '__main__':
             hasmail = False
             for url in urls:
                 if recordurls.find(url) != -1:
-                    logger.infoLog("Info: url has exist..:", url)
+                    logger.infoLog("Info: the news aready report ..", url)
                     continue
                 data = ts.notice_content(url)
                 att = email.mime.text.MIMEText(data, 'plain', 'utf-8')
