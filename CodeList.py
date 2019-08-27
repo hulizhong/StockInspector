@@ -94,8 +94,12 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('002253', '', '190806', 13.49, -200))
 
     sr.push(DataItem('002241', '歌尔股份', '190820', 13.10, 700))
+    sr.push(DataItem('002241', '歌尔股份', '190826', 13.60, -700))
 
-    sr.push(DataItem('603299', '苏盐井神', '190820', 8.40, 800))
+    sr.push(DataItem('603299', '苏盐井神', '190820', 8.04, 800))
+    sr.push(DataItem('603299', '苏盐井神', '190826', 8.14, -800))
+
+    sr.push(DataItem('600338', '西藏珠峰', '190826', 12.60, 0))
 
     if (flag == '11'):
         sr.des()
@@ -107,6 +111,7 @@ def insertHandingCode(dic, codes, flag):
     dic['600266'] = sr.getVolume('600266'); #北京城建 <8
     dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
     dic['002818'] = sr.getVolume('002818'); #富森美
+    dic['600338'] = sr.getVolume('600338'); #西藏珠峰
 
     for it in dic.keys():
         codes.append(it)
