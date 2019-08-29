@@ -83,6 +83,7 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('000402', '', '190809', 7.24, 1200))
     sr.push(DataItem('000402', '', '190812', 7.33, -1200))
     sr.push(DataItem('000402', '', '190816', 7.64, 1200))
+    sr.push(DataItem('000402', '', '190828', 7.56, -1200))
 
     sr.push(DataItem('600266', '北京城建', '190723', 8.24, 600))
     sr.push(DataItem('600266', '', '190802', 7.8, -600))
@@ -99,7 +100,9 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('603299', '苏盐井神', '190820', 8.04, 800))
     sr.push(DataItem('603299', '苏盐井神', '190826', 8.14, -800))
 
-    sr.push(DataItem('600338', '西藏珠峰', '190826', 12.60, 0))
+    sr.push(DataItem('600338', '西藏珠峰', '190829', 12.45, 1000))
+
+    sr.push(DataItem('600823', '世茂股份', '190829', 4.06, 2000))
 
     if (flag == '11'):
         sr.des()
@@ -107,11 +110,15 @@ def insertHandingCode(dic, codes, flag):
     dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
     dic['002241'] = sr.getVolume('002241'); #歌尔股份
     dic['603299'] = sr.getVolume('603299'); #苏盐井神
-    dic['600016'] = sr.getVolume('600016'); #民生银行 <5.95, 650
+    #dic['600016'] = sr.getVolume('600016'); #民生银行 <5.95, 650
     dic['600266'] = sr.getVolume('600266'); #北京城建 <8
-    dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
-    dic['002818'] = sr.getVolume('002818'); #富森美
+    #dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
+    #dic['002818'] = sr.getVolume('002818'); #富森美
     dic['600338'] = sr.getVolume('600338'); #西藏珠峰
+    dic['600823'] = sr.getVolume('600823'); #世茂股份
+    dic['600173'] = sr.getVolume('600173'); #卧龙地产
+    dic['300198'] = sr.getVolume('300198'); #纳川股份
+    dic['002128'] = sr.getVolume('002128'); #露天煤业
 
     for it in dic.keys():
         codes.append(it)
