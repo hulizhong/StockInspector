@@ -2,6 +2,7 @@
 # coding=utf-8
 import sys
 import tushare as ts
+import collections
 
 reload(sys)
 sys.setdefaultencoding('utf8')  
@@ -27,7 +28,7 @@ class StockRepository(object):
     stock trace repository.
     '''
     def __init__(self):
-        self.datas = {}
+        self.datas = collections.OrderedDict() #self.datas = {}
 
     def push(self, item):
         if self.datas.has_key(item.code):
@@ -75,8 +76,23 @@ def insertHandingCode(dic, codes, flag):
     #it.des()
 
     sr = StockRepository()
+    sr.push(DataItem('603299', '苏盐井神', '190820', 8.04, 800))
+    sr.push(DataItem('603299', '', '190826', 8.14, -800))
+
+    sr.push(DataItem('600266', '北京城建', '190723', 8.24, 600))
+    sr.push(DataItem('600266', '', '190802', 7.8, -600))
+
+    sr.push(DataItem('002253', '川大智胜', '190624', 15.45, 200))
+    sr.push(DataItem('002253', '', '190806', 13.49, -200))
+
+    sr.push(DataItem('002818', '--富森美', '190430', 14.75, 170)) #25.08 * -100
+    sr.push(DataItem('002818', '', '190806', 11.49, -170))
+
+    sr.push(DataItem('600338', '西藏珠峰', '190829', 12.45, 1000))
+    sr.push(DataItem('600338', '', '190830', 11.80, -1000))
+
     sr.push(DataItem('600016', '民生银行', '190423', 6.47, 1100))
-    sr.push(DataItem('600016', '民生银行', '190820', 5.84, -1100))
+    sr.push(DataItem('600016', '', '190820', 5.84, -1100))
 
     sr.push(DataItem('000402', '--金融街', '190422', 8.51, 800))
     sr.push(DataItem('000402', '', '190802', 7.35, -800))
@@ -85,27 +101,15 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('000402', '', '190816', 7.64, 1200))
     sr.push(DataItem('000402', '', '190828', 7.56, -1200))
 
-    sr.push(DataItem('600266', '北京城建', '190723', 8.24, 600))
-    sr.push(DataItem('600266', '', '190802', 7.8, -600))
-
-    sr.push(DataItem('002818', '--富森美', '190430', 14.75, 170)) #25.08 * -100
-    sr.push(DataItem('002818', '', '190806', 11.49, -170))
-
-    sr.push(DataItem('002253', '川大智胜', '190624', 15.45, 200))
-    sr.push(DataItem('002253', '', '190806', 13.49, -200))
-
     sr.push(DataItem('002241', '歌尔股份', '190820', 13.10, 700))
-    sr.push(DataItem('002241', '歌尔股份', '190826', 13.60, -700))
-
-    sr.push(DataItem('603299', '苏盐井神', '190820', 8.04, 800))
-    sr.push(DataItem('603299', '苏盐井神', '190826', 8.14, -800))
-
-    sr.push(DataItem('600338', '西藏珠峰', '190829', 12.45, 1000))
+    sr.push(DataItem('002241', '', '190826', 13.60, -700))
+    sr.push(DataItem('002241', '', '190830', 13.15, 1200))
 
     sr.push(DataItem('600823', '世茂股份', '190829', 4.06, 2000))
 
     if (flag == '11'):
         sr.des()
+        return
 
     dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
     dic['002241'] = sr.getVolume('002241'); #歌尔股份

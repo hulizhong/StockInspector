@@ -21,7 +21,10 @@ def getRealtime(whichList):
         insertPbLess1Code(codes)
     if whichList == '4' or whichList == '0': #----观察区
         insertWatchCode(codes)
-    codes.append("399006") #创业板指
+    if len(codes) != 0:
+        codes.append("399006") #创业板指
+    else:
+        return
 
     ## Step 2. unique the codes.
     uniqueCodes = []
