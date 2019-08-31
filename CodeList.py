@@ -91,17 +91,25 @@ class ProfitTrace(object):
                 rate *= -1
             rateStr = '%.2f' % (rate)
             lastTot = value
-            print "|%4s  Tot.%5s profit.%5s(%5s)|" % (key, str(value), str(profit), str(rateStr))
+            print "|%4s Tot.%6s gain.%6s(%6s)|" % (key, str(value), str(profit), str(rateStr))
         print "|-----------------------------------|"
 
     def push(self, date, vol):
         self.profits[date] = vol
 
-def showProfits():
+def showProfits19():
     pt19 = ProfitTrace()
     pt19.push('0830', 25.08)
     pt19.push('0906', 26.33)
+    pt19.push('0906', 26.33)
+    pt19.push('1231', 50.00)
     pt19.des()
+
+def showProfits20():
+    pt20 = ProfitTrace()
+    pt20.push('0106', 50.00)
+    pt20.push('1231', 100.05)
+    pt20.des()
 
 def insertHandingCode(dic, codes, flag):
     '''
@@ -144,7 +152,8 @@ def insertHandingCode(dic, codes, flag):
 
     if (flag == '11'):
         sr.des()
-        showProfits()
+        showProfits19()
+        #showProfits20()
         return
 
     dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
