@@ -23,6 +23,7 @@ class DataItem(object):
     def des(self):
         print self.date, self.name, self.price, "*", self.volume, "=", self.amount
 
+
 class StockRepository(object):
     '''
     stock trace repository.
@@ -67,6 +68,40 @@ class StockRepository(object):
         else:
             return 0
 
+class ProfitTrace(object):
+    '''
+    profit trace log.
+    '''
+    def __init__(self):
+        self.profits = collections.OrderedDict()
+
+    def des(self):
+        lastTot = 0
+        profit = 0 # profit = value - lastTot
+        rate = 0   # rate = profit / lastTot
+        print "|-----------------------------------|"
+        for key,value in self.profits.items():
+            if (lastTot != 0):
+                profit = value - lastTot
+                rate = (profit / lastTot) * 100
+            else:
+                profit = 0
+                rate = 0
+            if (rate < 0):
+                rate *= -1
+            rateStr = '%.2f' % (rate)
+            lastTot = value
+            print "|%4s  Tot.%5s profit.%5s(%5s)|" % (key, str(value), str(profit), str(rateStr))
+        print "|-----------------------------------|"
+
+    def push(self, date, vol):
+        self.profits[date] = vol
+
+def showProfits():
+    pt19 = ProfitTrace()
+    pt19.push('0830', 25.08)
+    pt19.push('0906', 26.33)
+    pt19.des()
 
 def insertHandingCode(dic, codes, flag):
     '''
@@ -109,6 +144,7 @@ def insertHandingCode(dic, codes, flag):
 
     if (flag == '11'):
         sr.des()
+        showProfits()
         return
 
     dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
