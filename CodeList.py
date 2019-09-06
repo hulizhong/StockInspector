@@ -8,6 +8,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')  
 
 
+# ----------------------------------------------------------------- split line (trade trace as follow.)----------------------------- #
 class DataItem(object):
     '''
     StockRepository's data item.
@@ -68,49 +69,6 @@ class StockRepository(object):
         else:
             return 0
 
-class ProfitTrace(object):
-    '''
-    profit trace log.
-    '''
-    def __init__(self):
-        self.profits = collections.OrderedDict()
-
-    def des(self):
-        lastTot = 0
-        profit = 0 # profit = value - lastTot
-        rate = 0   # rate = profit / lastTot
-        print "|-----------------------------------|"
-        for key,value in self.profits.items():
-            if (lastTot != 0):
-                profit = value - lastTot
-                rate = (profit / lastTot) * 100
-            else:
-                profit = 0
-                rate = 0
-            if (rate < 0):
-                rate *= -1
-            rateStr = '%.2f' % (rate)
-            lastTot = value
-            print "|%4s Tot.%6s gain.%6s(%6s)|" % (key, str(value), str(profit), str(rateStr))
-        print "|-----------------------------------|"
-
-    def push(self, date, vol):
-        self.profits[date] = vol
-
-def showProfits19():
-    pt19 = ProfitTrace()
-    pt19.push('0830', 25.08)
-    pt19.push('0906', 26.33)
-    pt19.push('0906', 26.33)
-    pt19.push('1231', 50.00)
-    pt19.des()
-
-def showProfits20():
-    pt20 = ProfitTrace()
-    pt20.push('0106', 50.00)
-    pt20.push('1231', 100.05)
-    pt20.des()
-
 def insertHandingCode(dic, codes, flag):
     '''
     持仓区
@@ -147,8 +105,18 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('002241', '歌尔股份', '190820', 13.10, 700))
     sr.push(DataItem('002241', '', '190826', 13.60, -700))
     sr.push(DataItem('002241', '', '190830', 13.15, 1200))
+    sr.push(DataItem('002241', '', '190902', 13.51, -1200))
 
     sr.push(DataItem('600823', '世茂股份', '190829', 4.06, 2000))
+    sr.push(DataItem('600823', '', '190902', 4.10, -2000))
+
+    sr.push(DataItem('600682', '南京新百', '190904', 11.60, 1100))
+    sr.push(DataItem('600682', '', '190905', 11.93, -1100))
+    sr.push(DataItem('600682', '', '190905', 11.68, 1100))
+    sr.push(DataItem('600682', '', '190906', 11.62, -1100))
+
+    sr.push(DataItem('002045', '国光电器', '190905', 6.42, 2000))
+    sr.push(DataItem('002045', '', '190906', 6.60, -2000))
 
     if (flag == '11'):
         sr.des()
@@ -159,15 +127,19 @@ def insertHandingCode(dic, codes, flag):
     dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
     dic['002241'] = sr.getVolume('002241'); #歌尔股份
     dic['603299'] = sr.getVolume('603299'); #苏盐井神
-    #dic['600016'] = sr.getVolume('600016'); #民生银行 <5.95, 650
+    dic['600016'] = sr.getVolume('600016'); #民生银行 <5.95, 650
     dic['600266'] = sr.getVolume('600266'); #北京城建 <8
-    #dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
-    #dic['002818'] = sr.getVolume('002818'); #富森美
+    dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
+    dic['002818'] = sr.getVolume('002818'); #富森美
     dic['600338'] = sr.getVolume('600338'); #西藏珠峰
     dic['600823'] = sr.getVolume('600823'); #世茂股份
     dic['600173'] = sr.getVolume('600173'); #卧龙地产
     dic['300198'] = sr.getVolume('300198'); #纳川股份
     dic['002128'] = sr.getVolume('002128'); #露天煤业
+    dic['000537'] = sr.getVolume('000537'); #广宇发展
+    dic['600682'] = sr.getVolume('600682'); #南京新百
+    dic['002045'] = sr.getVolume('002045'); #国光电器
+    #dic[''] = sr.getVolume(''); #
 
     for it in dic.keys():
         codes.append(it)
@@ -217,4 +189,97 @@ def insertWatchCode(codes):
     codes.append("300273") #和佳股份
     codes.append("600598") #北大荒
     codes.append("002818") #富森美
+
+
+# ----------------------------------------------------------------- split line (profit trace as follow.)----------------------------- #
+class ToolSet(object):
+    '''
+    calc util.
+    '''
+    def __init__(self):
+        pass
+
+    def multipleInterest(self, base, rate, cycle):
+        '''
+        '''
+        i = 1
+        print "|---------|"
+        while (i <= cycle):
+            base *= (1+rate)
+            print "|%2s %6.2f|" % (str(i), base)
+            i += 1
+        print "|---------|"
+        return base
+
+    def multipleInterestOneYear(self, base, rate):
+        '''
+        has 52 work's week in an year.
+        '''
+        return self.multipleInterest(base, rate, 52)
+
+class ProfitTrace(object):
+    '''
+    profit trace log.
+    '''
+    def __init__(self):
+        self.profits = collections.OrderedDict()
+
+    def des(self):
+        lastTot = 0
+        profit = 0 # profit = value - lastTot
+        rate = 0   # rate = profit / lastTot
+        print "|-----------------------------------|"
+        for key,value in self.profits.items():
+            if (lastTot != 0):
+                profit = value - lastTot
+                rate = (profit / lastTot) * 100
+            else:
+                profit = 0
+                rate = 0
+            if (rate < 0):
+                rate *= -1
+            rateStr = '%.2f' % (rate)
+            lastTot = value
+            print "|%4s Tot.%6s gain.%6s(%6s)|" % (key, str(value), str(profit), str(rateStr))
+        print "|-----------------------------------|"
+
+    def push(self, date, vol):
+        self.profits[date] = vol
+
+def showProfits19():
+    pt19 = ProfitTrace()
+    pt19.push('0830', 25.08)
+    pt19.push('0912', 27.00)
+    pt19.push('1231', 40.25)
+    pt19.des()
+
+def showProfits20():
+    pt20 = ProfitTrace()
+    pt20.push('0106', 40.25)
+    pt20.push('1231', 187.20)
+    pt20.des()
+
+#t = ToolSet()
+#print "%.2f" % t.multipleInterest(25.08, 0.03, 16)
+'''
+|---------|
+| 1  25.83|+26.22
+| 2  26.61|
+| 3  27.41|
+| 4  28.23|
+| 5  29.07|
+| 6  29.95|
+| 7  30.85|
+| 8  31.77|
+| 9  32.72|
+|10  33.71|
+|11  34.72|
+|12  35.76|
+|13  36.83|
+|14  37.94|
+|15  39.07|
+|16  40.25|
+|---------|
+'''
+#print "%.2f" % t.multipleInterestOneYear(40.25, 0.03)
 
