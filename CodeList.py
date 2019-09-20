@@ -91,6 +91,8 @@ def insertHandingCode(dic, codes, flag):
 
     sr.push(DataItem('600338', '西藏珠峰', '190829', 12.45, 1000))
     sr.push(DataItem('600338', '', '190830', 11.80, -1000))
+    sr.push(DataItem('600338', '', '190918', 12.64, 2000))
+    sr.push(DataItem('600338', '', '190919', 12.75, -2000))
 
     sr.push(DataItem('600016', '民生银行', '190423', 6.47, 1100))
     sr.push(DataItem('600016', '', '190820', 5.84, -1100))
@@ -114,11 +116,13 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('600682', '', '190905', 11.93, -1100))
     sr.push(DataItem('600682', '', '190905', 11.68, 1100))
     sr.push(DataItem('600682', '', '190906', 11.62, -1100))
+    sr.push(DataItem('600682', '', '190919', 11.87, 2100))
 
     sr.push(DataItem('002045', '国光电器', '190905', 6.42, 2000))
     sr.push(DataItem('002045', '', '190906', 6.60, -2000))
 
     sr.push(DataItem('002545', '东方铁塔', '190911', 6.64, 3900))
+    sr.push(DataItem('002545', '', '190917', 6.50, -3900))
 
     if (flag == '11'):
         sr.des()
@@ -128,21 +132,21 @@ def insertHandingCode(dic, codes, flag):
 
     dic['002545'] = sr.getVolume('002545'); #东方铁塔
     dic['600338'] = sr.getVolume('600338'); #西藏珠峰
-    dic['600173'] = sr.getVolume('600173'); #卧龙地产
-    dic['002241'] = sr.getVolume('002241'); #歌尔股份
-    dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
+    ##dic['600173'] = sr.getVolume('600173'); #卧龙地产
+    #dic['002241'] = sr.getVolume('002241'); #歌尔股份
+    #dic['000402'] = sr.getVolume('000402'); #金融街 <5.95, 650
     #dic['603299'] = sr.getVolume('603299'); #苏盐井神
     #dic['600016'] = sr.getVolume('600016'); #民生银行 <5.95, 650
     #dic['600266'] = sr.getVolume('600266'); #北京城建 <8
     #dic['002253'] = sr.getVolume('002253'); #川大智胜 15.45
     #dic['002818'] = sr.getVolume('002818'); #富森美
     #dic['600823'] = sr.getVolume('600823'); #世茂股份
-    #dic['300198'] = sr.getVolume('300198'); #纳川股份
+    ##dic['300198'] = sr.getVolume('300198'); #纳川股份
     #dic['002128'] = sr.getVolume('002128'); #露天煤业
     #dic['000537'] = sr.getVolume('000537'); #广宇发展
-    #dic['600682'] = sr.getVolume('600682'); #南京新百
+    dic['600682'] = sr.getVolume('600682'); #南京新百
     #dic['002045'] = sr.getVolume('002045'); #国光电器
-    #dic[''] = sr.getVolume(''); #
+    ##dic[''] = sr.getVolume(''); #
 
     for it in dic.keys():
         codes.append(it)
@@ -251,8 +255,7 @@ class ProfitTrace(object):
 
 def showProfits19():
     pt19 = ProfitTrace()
-    pt19.push('0830', 25.08)
-    pt19.push('0920', 27.50)
+    pt19.push('0927', 28.23)
     pt19.push('1231', 40.25)
     pt19.des()
 
@@ -268,7 +271,7 @@ def showProfits20():
 |---------|
 | 1  25.83|+26.22
 | 2  26.61|-26.33
-| 3  27.41|
+| 3  27.41|-25.76
 | 4  28.23|
 | 5  29.07|
 | 6  29.95|
