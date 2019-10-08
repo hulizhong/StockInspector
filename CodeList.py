@@ -125,6 +125,8 @@ def insertHandingCode(dic, codes, flag):
     sr.push(DataItem('002045', '', '190924', 6.92, 1800))
     sr.push(DataItem('002045', '', '190926', 6.67, -1800))
     sr.push(DataItem('002045', '', '190926', 6.60, 1800))
+    sr.push(DataItem('002045', '', '190930', 7.00, -900))
+    sr.push(DataItem('002045', '', '191008', 6.95, -900))
 
     sr.push(DataItem('002545', '东方铁塔', '190911', 6.64, 3900))
     sr.push(DataItem('002545', '', '190917', 6.50, -3900))
@@ -260,7 +262,7 @@ class ProfitTrace(object):
 
 def showProfits19():
     pt19 = ProfitTrace()
-    pt19.push('0927', 28.23)
+    pt19.push('0927', 29.07)
     pt19.push('1231', 40.25)
     pt19.des()
 
@@ -277,7 +279,7 @@ def showProfits20():
 | 1  25.83|+26.22
 | 2  26.61|-26.33
 | 3  27.41|-25.76
-| 4  28.23|
+| 4  28.23|-24.95
 | 5  29.07|
 | 6  29.95|
 | 7  30.85|
