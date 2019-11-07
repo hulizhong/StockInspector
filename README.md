@@ -12,3 +12,8 @@ Stock Inspector based on AliYun.
 - bs4
     - pip --trusted-host pypi.org --trusted-host files.pythonhosted.org install bs4
 
+
+## Maybe install others sofeware as follow.
+- pandas
+    - apt-get install python-pandas
+

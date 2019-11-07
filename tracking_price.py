@@ -56,9 +56,22 @@ def realtime_quotes(codesDic, hasData):
             qClose = float(res.ix[row, 'pre_close'])
             qCurrent = float(res.ix[row, 'price'])
             qTime = res.ix[row, 'time']
-            print "%6s  preclose.%6.2f current.%6.2f < %6.2f" % (code, qClose, qCurrent, codesDic[code])
+
+            # the diff price(current & goal) rate.
+            if qCurrent > codesDic[code]:
+                diffRate = ((qCurrent-codesDic[code])*100) / float(codesDic[code])
+            else:
+                diffRate = -0.0
+
+            # get the code name.
+            if len(res.ix[row, 'name']) == 3:
+                codename = "--" + res.ix[row, 'name']
+            else:
+                codename = res.ix[row, 'name']
+
+            print "%6s %4s preclose.%6.2f current.%6.2f < %6.2f diffRate.%6.2f" % (code, codename, qClose, qCurrent, codesDic[code], diffRate)
             if (qClose <= codesDic[code] or qCurrent <= codesDic[code]):
-                alterData = "    %s  P: %.2f(%.2f), goal(%.2f) %s\r\n" % (res.ix[row, 'name'], qCurrent, qClose, codesDic[code], qTime)
+                alterData = "    %s  P: %.2f(%.2f), goal(%.2f) %s\r\n" % (codename, qCurrent, qClose, codesDic[code], qTime)
                 msgPositive += alterData
                 hasData["has"] = True
             else:
