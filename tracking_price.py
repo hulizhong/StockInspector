@@ -99,3 +99,12 @@ if __name__ == '__main__':
         else:
             logger.infoLog("Info: send quotes mail succeed.")
 
+"""
+191110.analyse
+    002315, 18.7->24.5
+    000423, 34->40.
+    601117, 6->7.
+    000581, 17.4->24.
+    000402, 7.8->9.0
+19.
+"""
